@@ -1,0 +1,243 @@
+from IPython.display import clear_output
+
+def display_board(board):
+    
+    print('| '+board[1]+'|',board[2]+'|',board[3]+'|')
+    print('| '+board[4]+'|',board[5]+'|',board[6]+'|')
+    print('| '+board[7]+'|',board[8]+'|',board[9]+'|')
+
+import random
+
+def choose_first():
+    
+    select = random.randint(0,1)
+    
+    if select == 0:
+        print("Player one moves first")
+    else:
+        print("Player two moves first")
+        
+    return select
+
+def player_input(player_select):
+        
+    player1 = 0
+    player2 = 1    
+    
+    breaker = 0
+    
+    while breaker == 0:
+    
+        if player_select == 0:
+        
+            player1 = input("Player 1, please choose between X and O: ").upper()
+        
+            if player1 not in ['X','O']:
+                print("Incorrect entry! Please choose X or O")
+                            
+            elif player1.upper() == 'X':
+                player1 = 'X'
+                player2 = 'O'
+                breaker += 1
+            else:
+                player1 = 'O'
+                player2 = 'X'
+                breaker += 1
+        
+        else:
+        
+            player2 = input("Player 2, please choose between X and O: ").upper()
+        
+            if player2 not in ['X','O']:
+                print("Incorrect entry! Please choose X or O")
+            
+            elif player2.upper() == 'X':
+                player2 = 'X'
+                player1 = 'O'
+                breaker += 1
+            else:
+                player2 = 'O'
+                player1 = 'X'
+                breaker += 1
+            
+    return player1, player2
+
+def position_choice():
+     
+    position = ''
+
+    while position not in range(0,10):
+    
+        user_placement = input("Choose a position between (1-9): ")
+    
+        if user_placement.isdigit() == False:
+            print("Please input a digit!")
+        
+        if user_placement.isdigit() == True:
+            if int(user_placement) in range(0,10):
+                position = int(user_placement)
+            else:
+                print("Please input a digit between 1 and 9")
+                
+    return position
+
+def place_marker(board, player_symbol, position):
+    
+    test_board[position] = player_symbol
+
+def win_check(board, mark):
+    
+    if test_board[1] == test_board[2] == test_board[3] and test_board[1]!=' ' and test_board[2]!=' ' and test_board[3]!=' ' or \
+    test_board[4] == test_board[5] == test_board[6] and test_board[4]!=' ' and test_board[5]!=' ' and test_board[6]!=' ' or \
+    test_board[7] == test_board[8] == test_board[9] and test_board[7]!=' ' and test_board[8]!=' ' and test_board[9]!=' ' or \
+    test_board[1] == test_board[4] == test_board[7] and test_board[1]!=' ' and test_board[4]!=' ' and test_board[7]!=' ' or \
+    test_board[2] == test_board[5] == test_board[8] and test_board[2]!=' ' and test_board[5]!=' ' and test_board[8]!=' ' or \
+    test_board[3] == test_board[6] == test_board[9] and test_board[3]!=' ' and test_board[6]!=' ' and test_board[9]!=' ' or \
+    test_board[1] == test_board[5] == test_board[9] and test_board[1]!=' ' and test_board[5]!=' ' and test_board[9]!=' ' or \
+    test_board[3] == test_board[5] == test_board[7] and test_board[3]!=' ' and test_board[5]!=' ' and test_board[7]!=' ':
+        
+        return False
+    
+    else:
+        return True
+
+def space_check(board, position):
+    
+    while test_board[position] != ' ':
+        
+        print('Position Occupied! Please select another position')
+        
+        position = ' '
+    
+        while position not in range(0,10):
+    
+            user_placement = input("Choose a position between (1-9): ")
+    
+            if user_placement.isdigit() == False:
+                print("Please input a digit!")
+        
+            if user_placement.isdigit() == True:
+                if int(user_placement) in range(0,10):
+                    position = int(user_placement)
+                else:
+                    print("Please input a digit between 1 and 9")
+        
+    else:
+        return position
+
+def full_board_check(test_board):
+    
+    if ' ' in test_board[0:10]:
+        return True
+        
+    else:
+        return False
+
+def replay():
+    
+    replay = ' '
+    
+    while replay not in ['Y','N']:
+        
+        replay = input("Do you want to play again? (Y/N): ").upper()
+        
+        if replay.upper() not in ['Y','N']:
+            print('Please select Y or N!')
+        
+    if replay == 'Y':
+        return True
+    
+    return False
+
+game_on = True
+while game_on:
+
+    print('Welcome to Tic Tac Toe!')
+    test_board = ['#',' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    player1 = 0
+    player2 = 1
+    turns = 0
+
+    import random
+
+    game_on_win = True
+    game_on_draw = True
+
+    display_board(test_board)
+
+    player_select = choose_first()
+    
+    symbol = player_input(player_select)
+
+    while game_on_win and game_on_draw == True:
+    
+        while player_select % 2 == 0:
+        
+            if game_on_win == False:
+                break
+            if game_on_draw == False:
+                break
+        
+            print('Player one, it is your turn')
+            player_symbol = symbol[0] 
+        
+            position = position_choice()
+        
+            position = space_check(test_board, position)
+        
+            place_marker(test_board,player_symbol,position)
+        
+            display_board(test_board)
+        
+            game_on_win = win_check(test_board, player_symbol)
+        
+            game_on_draw = full_board_check(test_board)
+        
+            player_select += 1
+            turns += 1
+        
+            break
+    
+        while player_select % 2 != 0:
+        
+            if game_on_win == False:
+                break
+            if game_on_draw == False:
+                break
+        
+            print('Player two, it is your turn')
+            player_symbol = symbol[1]
+        
+            position = position_choice()
+        
+            position = space_check(test_board, position)
+        
+            place_marker(test_board,player_symbol,position)
+        
+            display_board(test_board)
+        
+            game_on_win = win_check(test_board, player_symbol)
+            game_on_draw = full_board_check(test_board)
+        
+            player_select += 1
+            turns += 1
+        
+            break
+
+    if turns == 9:
+        if game_on_win == False:
+            if (player_select - 1) %2 == 0:
+                print('Player 1 wins!')
+            else:
+                (player_select - 1) %2 != 0
+                print('Player 2 wins!')
+        else:
+            print('Draw!')
+    elif (player_select - 1) %2 == 0:
+        print('Player 1 wins!')
+    else:
+        (player_select - 1) %2 != 0
+        print('Player 2 wins!')
+    
+    game_on = replay()
+    clear_output()
